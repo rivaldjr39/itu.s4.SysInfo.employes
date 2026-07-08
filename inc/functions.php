@@ -41,7 +41,7 @@ function get_all_departments()
                   AND dm.to_date = '9999-01-01'
             LEFT JOIN employees e
                    ON e.emp_no = dm.emp_no
-            ORDER BY d.dept_no";
+            ORDER BY d.dept_name";
     return get_all_lines($sql);
 }
 
@@ -202,7 +202,7 @@ function remove_manager($dept_no, $end_date)
 
 function get_one_department($dept_no)
 {
-    // ⚠️ sprintf n'échappe pas : injection SQL toujours possible (à sécuriser avec une requête préparée).
+    // sprintf n'échappe pas : injection SQL toujours possible (à sécuriser avec une requête préparée).
     $sql = "SELECT dept_no, dept_name
             FROM departments
             WHERE dept_no = '%s'";
@@ -212,7 +212,7 @@ function get_one_department($dept_no)
 
 function get_employees_by_department($dept_no, $limit, $offset)
 {
-    // ⚠️ sprintf n'échappe pas : injection SQL toujours possible (à sécuriser avec une requête préparée).
+    // sprintf n'échappe pas : injection SQL toujours possible (à sécuriser avec une requête préparée).
     // %d force des entiers pour LIMIT et OFFSET (pagination).
     $sql = "SELECT e.emp_no,
                    e.first_name,
@@ -334,7 +334,7 @@ function search_employees($dept_no, $name, $age_min, $age_max)
             INNER JOIN departments d
                     ON d.dept_no = de.dept_no
             WHERE $where
-            ORDER BY e.last_name, e.first_name
+            ORDER BY d.dept_name
             LIMIT 200";
     return get_all_lines($sql);
 }
